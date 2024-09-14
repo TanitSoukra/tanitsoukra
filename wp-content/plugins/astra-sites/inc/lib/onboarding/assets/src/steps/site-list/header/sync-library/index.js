@@ -1,16 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import {
-	Toaster,
-	Tooltip,
-} from '@brainstormforce/starter-templates-components';
+import { Toaster } from '@brainstormforce/starter-templates-components';
+import Tooltip from '../../../../components/tooltip/tooltip';
 import { __ } from '@wordpress/i18n';
 import ICONS from '../../../../../icons';
 import { useStateValue } from '../../../../store/store';
 import { isSyncSuccess, SyncStart } from './utils';
 import './style.scss';
+import { classNames, getStepIndex } from '../../../../utils/functions';
 
 const SyncLibrary = () => {
-	const [ { currentIndex }, dispatch ] = useStateValue();
+	const [ { currentIndex, bgSyncInProgress }, dispatch ] = useStateValue();
 
 	const [ syncState, setSyncState ] = useState( {
 		isLoading: false,
@@ -32,7 +31,7 @@ const SyncLibrary = () => {
 		}
 	}, [ isLoading ] );
 
-	if ( 0 === currentIndex ) {
+	if ( getStepIndex( 'page-builder' ) === currentIndex ) {
 		return null;
 	}
 
@@ -56,7 +55,7 @@ const SyncLibrary = () => {
 	const handleClick = async ( event ) => {
 		event.stopPropagation();
 
-		if ( isLoading ) {
+		if ( isLoading || bgSyncInProgress ) {
 			return;
 		}
 
@@ -72,11 +71,33 @@ const SyncLibrary = () => {
 	return (
 		<>
 			<div
-				className={ `st-sync-library ${ isLoading ? 'loading' : '' }` }
+				className={ classNames(
+					'relative st-sync-library',
+					isLoading && 'loading',
+					bgSyncInProgress && 'cursor-not-allowed'
+				) }
 				onClick={ handleClick }
 			>
-				<Tooltip content={ __( 'Sync Library', 'astra-sites' ) }>
-					{ ICONS.sync }
+				<Tooltip
+					content={
+						! bgSyncInProgress &&
+						__( 'Sync Library', 'astra-sites' )
+					}
+				>
+					<div className="inline-flex items-center justify-center">
+						<span
+							className={ classNames(
+								bgSyncInProgress && 'opacity-50'
+							) }
+						>
+							{ ICONS.sync }
+						</span>
+						{ bgSyncInProgress && (
+							<span className="absolute bottom-[18%] left-1/2 -translate-x-1/2 translate-y-1/2 rounded bg-credit-warning pb-px px-1 pt-0 text-white shadow-sm text-[0.625rem] leading-[0.9375rem]">
+								{ __( 'Syncing', 'astra-sites' ) }
+							</span>
+						) }
+					</div>
 				</Tooltip>
 			</div>
 			{ ! isLoading && syncStatus === true && (

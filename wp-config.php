@@ -70,6 +70,9 @@ define('NONCE_SALT',       'put your unique phrase here');
  */
 $table_prefix = 'wp_';
 
+
+
+
 /**
  * Pour les développeurs et développeuses : le mode déboguage de WordPress.
  *

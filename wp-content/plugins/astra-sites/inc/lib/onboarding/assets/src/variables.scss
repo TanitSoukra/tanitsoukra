@@ -11,6 +11,7 @@ body {
 	--st-background-secondary: #f7f7f9;
 	--st-background-primary: #ffffff;
 	--st-background-light: #f9fafb;
+	--st-tooltip-background: #020617;
 
 	/* Font sizes */
 	--st-font-size-xxl: 30px;
@@ -132,18 +133,4 @@ body {
 	font-weight: 600;
 	line-height: 0.875rem;
 	color: var( --app-heading );
-}
-
-.zw-tooltip {
-	background: #334155;
-	color: white;
-	padding: 0 8px;
-	border-radius: 4px;
-}
-
-.zw-tooltip > .tippy-content {
-	padding: 2px 4px;
-	font-size: 0.75rem;
-	font-weight: 400;
-	line-height: 1rem;
 }

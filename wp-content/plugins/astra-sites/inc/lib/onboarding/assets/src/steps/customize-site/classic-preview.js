@@ -20,6 +20,7 @@ const ClassicPreview = () => {
 			selectedTemplateType,
 			templateId,
 			currentIndex,
+			builder,
 		},
 		dispatch,
 	] = useStateValue();
@@ -53,7 +54,6 @@ const ClassicPreview = () => {
 	const setNextStep = () => {
 		dispatch( {
 			type: 'set',
-			// currentCustomizeIndex: currentCustomizeIndex + 1,
 			currentIndex: currentIndex + 1,
 		} );
 	};
@@ -83,23 +83,25 @@ const ClassicPreview = () => {
 					) }
 				</p>
 			</div>
-			<div className="st-preview-section px-6 mb-5 w-full">
+			<div className="st-preview-section px-6 mb-5 w-full space-y-5">
 				<SiteLogo />
 				{ templateResponse ? (
 					<>
 						<FontSelector />
-						<ColorPalettes />
+						{ builder !== 'beaver-builder' && <ColorPalettes /> }
 					</>
 				) : (
-					<div className="space-y-5 mt-5">
+					<div className="space-y-5">
 						<div
 							data-placeholder
 							className="relative animate-pulse overflow-hidden bg-gray-300 h-[50px] w-full rounded-md"
 						/>
-						<div
-							data-placeholder
-							className="relative animate-pulse overflow-hidden bg-gray-300 h-[50px] w-full rounded-md"
-						/>
+						{ builder !== 'beaver-builder' && (
+							<div
+								data-placeholder
+								className="relative animate-pulse overflow-hidden bg-gray-300 h-[50px] w-full rounded-md"
+							/>
+						) }
 					</div>
 				) }
 			</div>
@@ -134,7 +136,6 @@ const ClassicPreview = () => {
 					<PreviousStepLink
 						className="w-full"
 						onClick={ lastStep }
-						before
 						customizeStep={ true }
 					>
 						{ __( 'Back', 'astra-sites' ) }

@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Tooltip } from '@brainstormforce/starter-templates-components';
 import { __ } from '@wordpress/i18n';
-import { useSelect, useDispatch } from '@wordpress/data';
 import { Button, PreviousStepLink } from '../../../../../src/components';
 import ICONS from '../../../../../icons';
 import { useStateValue } from '../../../../../src/store/store';
@@ -9,12 +8,9 @@ import {
 	saveTypography,
 	setColorPalettes,
 	setSiteLogo,
-	setSiteTitle,
 } from '../../../../../src/steps/import-site/import-utils';
-import LoadingSpinner from '../../../onboarding-ai/components/loading-spinner';
-import { STORE_KEY } from '../../../onboarding-ai/store';
-import { removeLocalStorageItem } from '../../../onboarding-ai/helpers';
-import { initialState } from '../../../onboarding-ai/store/reducer';
+import LoadingSpinner from '../../../../components/loading-spinner';
+import { removeLocalStorageItem } from '../../../../utils/functions';
 
 const List = ( { className, options, onSelect, selected, type } ) => {
 	const handleKeyPress = ( e, id ) => {
@@ -158,7 +154,6 @@ export const getFontName = ( fontName, inheritFont ) => {
 };
 
 const FontSelector = ( { options, onSelect, selected } ) => {
-	const { setWebsiteOnboardingAIDetails } = useDispatch( STORE_KEY );
 	const [
 		{
 			currentCustomizeIndex,
@@ -170,11 +165,6 @@ const FontSelector = ( { options, onSelect, selected } ) => {
 		dispatch,
 	] = useStateValue();
 
-	const { businessName } = useSelect( ( select ) => {
-		const { getAIStepData } = select( STORE_KEY );
-		return getAIStepData();
-	} );
-
 	const [ isSaving, setIsSaving ] = useState( false );
 
 	const fonts = options.map( ( font, index ) => {
@@ -183,7 +173,6 @@ const FontSelector = ( { options, onSelect, selected } ) => {
 	} );
 	const defaultFonts = fonts.filter( ( font ) => font.default );
 	const otherFonts = fonts.filter( ( font ) => ! font.default );
-	// let premiumTemplate = false;
 
 	/**
 	 * 8. Update the website as per the customizations selected by the user.
@@ -196,11 +185,9 @@ const FontSelector = ( { options, onSelect, selected } ) => {
 		setIsSaving( true );
 		await setSiteLogo( siteLogo );
 		await setColorPalettes( JSON.stringify( activePalette ) );
-		await setSiteTitle( businessName );
 		await saveTypography( typography );
 
 		removeLocalStorageItem( 'ai-onboarding-details' );
-		setWebsiteOnboardingAIDetails( initialState.onboardingAI );
 
 		localStorage.removeItem( 'starter-templates-iframe-preview-data' );
 
@@ -209,28 +196,6 @@ const FontSelector = ( { options, onSelect, selected } ) => {
 
 	const nextStep = () => {
 		customizeWebsite();
-		// if ( ! importError ) {
-		// 	premiumTemplate = 'free' !== templateResponse[ 'astra-site-type' ];
-		// 	if ( premiumTemplate && ! licenseStatus ) {
-		// 		if ( astraSitesVars.isPro ) {
-		// 			dispatch( {
-		// 				type: 'set',
-		// 				validateLicenseStatus: true,
-		// 				currentCustomizeIndex: currentCustomizeIndex + 1,
-		// 			} );
-		// 		} else {
-		// 			dispatch( {
-		// 				type: 'set',
-		// 				currentCustomizeIndex: currentCustomizeIndex + 1,
-		// 			} );
-		// 		}
-		// 	} else {
-		// 		dispatch( {
-		// 			type: 'set',
-		// 			currentIndex: currentIndex + 1,
-		// 		} );
-		// 	}
-		// }
 	};
 
 	const lastStep = () => {

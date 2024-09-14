@@ -5,23 +5,22 @@ import {
 	RectangleStackIcon,
 } from '@heroicons/react/24/outline';
 import { __ } from '@wordpress/i18n';
-import { useDispatch } from '@wordpress/data';
 import { removeQueryArgs } from '@wordpress/url';
 import { Button, DefaultStep, PreviousStepLink } from '../../components/index';
 import { useStateValue } from '../../store/store';
-import { STORE_KEY } from '../onboarding-ai/store';
-import LimitExceedModal from '../onboarding-ai/components/limit-exceeded-modal';
+import LimitExceedModal from '../../components/limit-exceeded-modal';
 import { WandIcon } from '../ui/icons';
 import './style.scss';
+import { getStepIndex, removeLocalStorageItem } from '../../utils/functions';
+const { showClassicTemplates } = astraSitesVars;
 
 const SiteType = () => {
-	const [ { builder }, dispatch ] = useStateValue();
-	const { setLimitExceedModal } = useDispatch( STORE_KEY );
+	const [ { builder, currentIndex, limitExceedModal }, dispatch ] =
+		useStateValue();
 
 	const zipPlans = astraSitesVars?.zip_plans;
 	const sitesRemaining = zipPlans?.plan_data?.remaining;
 	const aiSitesRemainingCount = sitesRemaining?.ai_sites_count;
-	const allSitesRemainingCount = sitesRemaining?.all_sites_count;
 
 	useEffect( () => {
 		const startTime = localStorage.getItem( 'st-import-start' );
@@ -58,13 +57,15 @@ const SiteType = () => {
 		const token = urlParams.get( 'token' );
 		if ( token ) {
 			if (
-				( typeof aiSitesRemainingCount === 'number' &&
-					aiSitesRemainingCount <= 0 ) ||
-				( typeof allSitesRemainingCount === 'number' &&
-					allSitesRemainingCount <= 0 )
+				typeof aiSitesRemainingCount === 'number' &&
+				aiSitesRemainingCount <= 0
 			) {
-				setLimitExceedModal( {
-					open: true,
+				dispatch( {
+					type: 'set',
+					limitExceedModal: {
+						...limitExceedModal,
+						open: true,
+					},
 				} );
 			} else {
 				dispatch( {
@@ -77,22 +78,18 @@ const SiteType = () => {
 
 	const handleBuildWithAIPress = () => {
 		if (
-			( typeof aiSitesRemainingCount === 'number' &&
-				aiSitesRemainingCount <= 0 ) ||
-			( typeof allSitesRemainingCount === 'number' &&
-				allSitesRemainingCount <= 0 )
+			typeof aiSitesRemainingCount === 'number' &&
+			aiSitesRemainingCount <= 0
 		) {
-			setLimitExceedModal( {
-				open: true,
+			dispatch( {
+				type: 'set',
+				limitExceedModal: {
+					...limitExceedModal,
+					open: true,
+				},
 			} );
 			return;
 		}
-
-		dispatch( {
-			type: 'set',
-			currentIndex: 1,
-			builder: 'ai-builder',
-		} );
 		const content = new FormData();
 		content.append( 'action', 'astra-sites-change-page-builder' );
 		content.append( '_ajax_nonce', astraSitesVars._ajax_nonce );
@@ -101,7 +98,24 @@ const SiteType = () => {
 			method: 'post',
 			body: content,
 		} );
+
+		window.location.href =
+			astraSitesVars.adminURL + 'themes.php?page=ai-builder';
 	};
+
+	useEffect( () => {
+		if (
+			currentIndex === getStepIndex( 'page-builder' ) &&
+			builder !== 'fse'
+		) {
+			dispatch( {
+				type: 'set',
+				builder: 'ai-builder',
+			} );
+		}
+	}, [] );
+
+	const colClass = showClassicTemplates ? 'md:grid-cols-2' : 'md:grid-cols-1';
 
 	return (
 		<DefaultStep
@@ -116,7 +130,9 @@ const SiteType = () => {
 						</h1>
 					</div>
 					<p className="screen-description" />
-					<div className="max-w-full lg:max-w-[800px] grid grid-cols-1 md:grid-cols-2 place-content-center gap-6 ist-fadeinUp">
+					<div
+						className={ `max-w-full lg:max-w-[800px] grid grid-cols-1 ${ colClass } place-content-center gap-6 ist-fadeinUp` }
+					>
 						<div
 							className="flex-col flex bg-white pt-10 pb-8 px-8 text-left relative  rounded-xl shadow-card gradient-border-cover gradient-border-cover-button max-w-[356px]"
 							tabIndex="0"
@@ -140,60 +156,69 @@ const SiteType = () => {
 									className="w-full h-10"
 									onClick={ handleBuildWithAIPress }
 								>
-									<span>Try the New AI Builder</span>{ ' ' }
+									<span>
+										{ __( 'Build with AI', 'astra-sites' ) }
+									</span>{ ' ' }
 									<ArrowRightIcon className="w-5 h-5 ml-2" />
 								</Button>
 							</div>
 						</div>
-						<div
-							className="flex-col flex bg-white pt-10 pb-8 px-8 text-left relative rounded-xl max-w-[356px]"
-							tabIndex="0"
-							onKeyDown={ ( event ) =>
-								handleKeyPress( event, () => {
-									dispatch( {
-										type: 'set',
-										currentIndex: 2,
-									} );
-								} )
-							}
-						>
-							<RectangleStackIcon className="w-12 h-12 text-accent-st-secondary stroke-1" />
-							<div className="mt-6 text-xl font-semibold leading-7 mb-2.5 text-heading-text">
-								{ __(
-									'Classic Starter Templates',
-									'astra-sites'
-								) }
-							</div>
-							<div className="zw-sm-normal text-body-text">
-								{ ' ' }
-								{ __(
-									'Begin the website-building process with our extensive library of professionally designed templates tailored to meet your requirements.',
-									'astra-sites'
-								) }{ ' ' }
-							</div>
-							<div className="pt-10 mt-auto">
-								<Button
-									className="w-full h-10"
-									type="secondary"
-									onClick={ () => {
+						{ showClassicTemplates && (
+							<div
+								className="flex-col flex bg-white pt-10 pb-8 px-8 text-left relative rounded-xl max-w-[356px]"
+								tabIndex="0"
+								onKeyDown={ ( event ) =>
+									handleKeyPress( event, () => {
 										dispatch( {
 											type: 'set',
-											builder:
-												builder === 'ai-builder'
-													? 'gutenberg'
-													: builder,
-											currentIndex:
-												astraSitesVars.default_page_builder
-													? 4
-													: 3,
+											currentIndex: 2,
 										} );
-									} }
-								>
-									<span>Build with Templates</span>{ ' ' }
-									<ArrowRightIcon className="w-5 h-5 ml-2" />
-								</Button>
+									} )
+								}
+							>
+								<RectangleStackIcon className="w-12 h-12 text-accent-st-secondary stroke-1" />
+								<div className="mt-6 text-xl font-semibold leading-7 mb-2.5 text-heading-text">
+									{ __(
+										'Classic Starter Templates',
+										'astra-sites'
+									) }
+								</div>
+								<div className="zw-sm-normal text-body-text">
+									{ ' ' }
+									{ __(
+										'Begin the website-building process with our extensive library of professionally designed templates tailored to meet your requirements.',
+										'astra-sites'
+									) }{ ' ' }
+								</div>
+								<div className="pt-10 mt-auto">
+									<Button
+										className="w-full h-10"
+										type="secondary"
+										onClick={ () => {
+											dispatch( {
+												type: 'set',
+												builder:
+													builder === 'ai-builder'
+														? 'gutenberg'
+														: builder,
+												currentIndex: 1,
+											} );
+											removeLocalStorageItem(
+												'st-scroll-position'
+											);
+										} }
+									>
+										<span>
+											{ __(
+												'Build with Templates',
+												'astra-sites'
+											) }
+										</span>{ ' ' }
+										<ArrowRightIcon className="w-5 h-5 ml-2" />
+									</Button>
+								</div>
 							</div>
-						</div>
+						) }
 					</div>
 					<LimitExceedModal
 						onOpenChange={ () => {

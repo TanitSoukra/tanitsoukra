@@ -1,5 +1,8 @@
+import clsx from 'clsx';
+import { twMerge } from 'tailwind-merge';
 import { __ } from '@wordpress/i18n';
 import { decodeEntities } from '@wordpress/html-entities';
+import { STEPS } from '../steps/util';
 
 export const whiteLabelEnabled = () => {
 	return astraSitesVars.isWhiteLabeled ? true : false;
@@ -213,4 +216,68 @@ export const saveGutenbergAsDefaultBuilder = ( pageBuilder = 'gutenberg' ) => {
 		method: 'post',
 		body: content,
 	} );
+};
+
+export const classNames = ( ...classes ) => twMerge( clsx( classes ) );
+
+/**
+ *
+ * @param {string} key
+ * @param {any}    value
+ * @return {any} value
+ */
+export const setLocalStorageItem = ( key, value ) => {
+	try {
+		if ( typeof window === 'undefined' ) {
+			return;
+		}
+		localStorage.setItem( key, JSON.stringify( value ) );
+	} catch ( error ) {
+		// Handle error (e.g., localStorage is full, etc.)
+	}
+};
+
+/**
+ * Get localStorage item
+ *
+ * @param {string} key
+ * @return {any} value
+ */
+export const removeLocalStorageItem = ( key ) => {
+	try {
+		if ( typeof window === 'undefined' ) {
+			return;
+		}
+		localStorage.removeItem( key );
+	} catch ( error ) {
+		console.error( 'Error while removing localStorage:', error );
+	}
+};
+
+export const debounce = ( func, wait, immediate ) => {
+	let timeout;
+	return ( ...args ) => {
+		const later = () => {
+			timeout = null;
+			if ( ! immediate ) {
+				func( ...args );
+			}
+		};
+		const callNow = immediate && ! timeout;
+		clearTimeout( timeout );
+		timeout = setTimeout( later, wait );
+		if ( callNow ) {
+			func( ...args );
+		}
+	};
+};
+
+/**
+ * Get step index from step name.
+ *
+ * @param {string} name
+ * @return {number} index
+ */
+export const getStepIndex = ( name = '' ) => {
+	return STEPS.findIndex( ( step ) => step.name === name );
 };

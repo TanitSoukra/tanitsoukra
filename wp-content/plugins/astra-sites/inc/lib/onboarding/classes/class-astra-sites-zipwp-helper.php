@@ -141,32 +141,6 @@ class Astra_Sites_ZipWP_Helper {
 	}
 
 	/**
-	 * Get image placeholder array.
-	 *
-	 * @since 4.0.9
-	 * @return array<string, array<string, string>>
-	 */
-	public static function get_image_placeholders() {
-
-		return array(
-				array(
-					"auther_name"=> 'Placeholder',
-					"id"=> "placeholder-landscape",
-					"orientation"=> 'landscape',
-					'optimized_url' => 'https://websitedemos.net/wp-content/uploads/2024/02/placeholder-landscape.png',
-					'url' => 'https://websitedemos.net/wp-content/uploads/2024/02/placeholder-landscape.png'
-				),
-				array(
-					"auther_name"=> 'Placeholder',
-					"id"=> "placeholder-portrait",
-					"orientation"=> 'portrait',
-					'optimized_url' => 'https://websitedemos.net/wp-content/uploads/2024/02/placeholder-portrait.png',
-					'url' => 'https://websitedemos.net/wp-content/uploads/2024/02/placeholder-portrait.png'
-				),
-			);
-	}
-
-		/**
 	 * Download image from URL.
 	 *
 	 * @param array $image Image data.
@@ -210,8 +184,8 @@ class Astra_Sites_ZipWP_Helper {
 			return new \WP_Error( 'parse_url', 'Unable to parse URL' );
 		}
 
-		// Use basename to extract the file name from the path.
-		$image_name = basename( $path );
+		// Using $id to create image name instead of $path.
+		$image_name = 'zipwp-image-' . sanitize_title( $id );
 
 		// Fallback name.
 		$image_name = $image_name ? $image_name : sanitize_title( $id );

@@ -1,5 +1,6 @@
 import { STEPS } from '../steps/util';
 import { getURLParmsValue } from '../utils/url-params';
+import { __ } from '@wordpress/i18n';
 
 let currentIndexKey = 0;
 let builderKey = 'gutenberg';
@@ -20,13 +21,69 @@ export const siteLogoDefault = {
 };
 
 export const initialState = {
+	siteFeatures: [
+		{
+			title: __( 'Donations', 'astra-sites' ),
+			id: 'donations',
+			description: __(
+				'Collect donations online from your website',
+				'astra-sites'
+			),
+			enabled: false,
+			icon: 'heart',
+		},
+		{
+			title: __( 'Automation & Integrations', 'astra-sites' ),
+			id: 'automation-integrations',
+			description: __( 'Automate your website & tasks', 'astra-sites' ),
+			enabled: false,
+			icon: 'squares-plus',
+		},
+		{
+			title: __( 'Sales Funnels', 'astra-sites' ),
+			id: 'sales-funnels',
+			description: __(
+				'Boost your sales & maximize your profits',
+				'astra-sites'
+			),
+			enabled: false,
+			icon: 'funnel',
+		},
+		{
+			title: __( 'Video Player', 'astra-sites' ),
+			id: 'video-player',
+			description: __(
+				'Showcase your videos on your website',
+				'astra-sites'
+			),
+			enabled: false,
+			icon: 'play-circle',
+		},
+		{
+			title: __( 'Free Live Chat', 'astra-sites' ),
+			id: 'live-chat',
+			description: __(
+				'Connect with your website visitors for free',
+				'astra-sites'
+			),
+			enabled: false,
+			icon: 'live-chat',
+		},
+	],
+	formDetails: {
+		first_name: '',
+		email: '',
+		wp_user_type: '',
+		build_website_for: '',
+		opt_in: true,
+	},
 	allSitesData: astraSitesVars.all_sites || {},
 	allCategories: astraSitesVars.allCategories || [],
 	allCategoriesAndTags: astraSitesVars.allCategoriesAndTags || [],
 	aiActivePallette: null,
 	aiActiveTypography: null,
 	aiSiteLogo: siteLogoDefault,
-	currentIndex: 'ai-builder' === builderKey ? 1 : currentIndexKey,
+	currentIndex: 'ai-builder' === builderKey ? 0 : currentIndexKey,
 	currentCustomizeIndex: 0,
 	siteLogo: siteLogoDefault,
 	activePaletteSlug: 'default',
@@ -42,7 +99,7 @@ export const initialState = {
 	selectedMegaMenu: '',
 	siteSearchTerm: getURLParmsValue( window.location.search, 's' ) || '',
 	userSubscribed: false,
-	showSidebar: true,
+	showSidebar: window && window?.innerWidth < 1024 ? false : true,
 	tryAgainCount: 0,
 	pluginInstallationAttempts: 0,
 	confettiDone: false,
@@ -109,6 +166,16 @@ export const initialState = {
 	// Search.
 	searchTerms: [],
 	searchTermsWithCount: [],
+	enabledFeatureIds: [],
+	dismissAINotice: astraSitesVars.dismiss_ai_notice,
+
+	// Sync Library.
+	bgSyncInProgress: !! astraSitesVars.bgSyncInProgress,
+
+	// Limit exceed modal for AI-Builder.
+	limitExceedModal: {
+		open: false,
+	},
 };
 
 const reducer = ( state = initialState, { type, ...rest } ) => {

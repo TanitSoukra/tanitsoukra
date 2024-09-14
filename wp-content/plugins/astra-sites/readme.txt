@@ -4,8 +4,8 @@ Donate link: https://wpastra.com/pro/
 Tags: Elementor,Templates,Gutenberg,Block Editor,Astra Starter Sites
 Requires at least: 4.4
 Requires PHP: 7.4
-Tested up to: 6.5
-Stable tag: 4.1.7
+Tested up to: 6.6.1
+Stable tag: 4.4.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -247,6 +247,202 @@ Once your website is generated, you have complete control over its content and l
 
 == Changelog ==
 
+v4.4.2 - 03-September-2024
+- New: 
+    - AI Builder : Added a filter to update default website language.
+    - AI Builder : Added image replacement compatibility for archive product banner image.
+    - Added filter to disable the "Design Kit" library.
+- Improvements:
+    - Design Kit: Enhanced API performance by optimizing execution times and reducing delays.
+    - Free Images : Enhanced UI for better user experience.
+    - Better database handling for the NPS.
+- Fixes:
+    - Design Kit: Corrected styling issues for patterns/pages preview to ensure consistent display.
+    - Design Kit: Addressed CSS conflicts with SureCart blocks to prevent styling discrepancies.
+    - After import images were not getting replaced for classic Elementor templates.
+
+v4.4.1 - 28-August-2024
+- Improvement: Hardened the security of the plugin.
+
+v4.4.0 - 07-August-2024
+- New:
+    - AI Builder: Enhanced onboarding UI.
+    - Design Kit: Enhanced personalized library steps UI.
+- Improvements:
+    - Switched from using transient to option data for storing information.
+    - AI Builder: Enabled business descriptions to be generated in the selected language.
+    - Design Kit: Converted Spectra common stylesheet to a JSON file instead of an option variable.
+    - Design Kit: Hidden Update Image option until the user personalizes the library.
+    - Design Kit:Blocked block pages preview if import is in process.
+- Fixes:
+    - Fixed issue where user input was not getting prefilled when switching between steps.
+    - Ensured required plugins for selected features are correctly installed.
+    - Resolved an issue where some classic editor templates were getting stuck during import.
+    - Fixed issue where the default logo was not getting replaced for classic templates.
+    - AI Builder: Removed the condition that showed the site limit exceed popup for all sites.
+    - Design Kit: Fixed issue where the Favorites functionality was not working in certain cases.
+    - Design Kit: Addressed problem where related block pages were not displaying in some scenarios.
+    - Design Kit: Fixed content regeneration for a category.
+    - Design Kit: Resolved visibility issue with the "Design Kit" button in WordPress 6.6 with the full site editor.
+
+v4.3.9 - 25-July-2024
+- Improvement: Improved the UI/UX.  
+- Improvement: AI Builder - Better error message handling.  
+- Improvement: AI Builder - Added new icon for the ecommerce feature.  
+- Improvement: Improved the way Starter Templates translate strings in the script.  
+- Fix: AI Builder - Fixed an issue where the template preview designs were showing ternary operation results as HTML.  
+- Fix: AI Builder - Required plugins data was incorrect on the Elementor templates screen.  
+- Fix: AI Builder - Social icons title was not translation-ready.  
+- Fix: AI Builder - Fixed an issue where the import process was failing after changing the site language.  
+- Fix: Resolved a fatal error encountered with the Ghost Kit plugin.
+
+v4.3.8 - 16-July-2024
+- New: AI Builder - Added script translation with a filter to update the text domain for script translation.
+- Improvement: ZipAI - Added WordPress 6.6 compatibility.
+- Improvement: Hardcoded index are made dynamic.
+- Fix: AI Builder - Premium badge was not showing for Premium templates.
+- Fix: Footer widgets was not getting imported for AI & Classic templates.
+
+v4.3.7 - 09-July-2024
+- New:
+    - Added NPS Survey.
+- Improvements:
+    - Updated "What's New" library.
+    - Enhanced sidebar for classic editor to align with AI Builder.
+    - Updated pre-import screen for classic templates.
+    - Standardized text-domain to "astra-aites" for all libraries.
+    - Refreshed font pairs.
+    - Removed duplicate code.
+- Fix:
+    - Upload logo and selected color pallete was not getting imported for FSE.
+    - Design Kit - Business category now pre-fills correctly during onboarding.
+    - AI Builder - Business name now resets after clicking "Start Over."
+    - AI Builder - "Resume Session" popup no longer appears after site creation.
+    - AI Builder - Business type now pre-fills correctly when site is created from ZipWP platform.
+    - AI Builder - Hover color for accent color is now a CSS variable.
+    - AI Builder - Correct icon now appears for the Contact Form feature.
+
+v4.3.6 - 04-July-2024
+- Fix: AI Builder - Resolved an issue preventing users from continuing to the next step if the business type input was entered manually.
+- Fix: Design Kit - Resolved an issue where adding social media URLs caused an error when proceeding to the next step.
+
+v4.3.5 - 02-July-2024
+- New
+    - Design Kit - Added a page preview feature along with other page options.
+    - Design Kit - Introduced error boundaries for better error management.
+- Improvement
+    - Design Kit - Introduced a new "Favorites" tab, separated from Patterns, Pages, and Kits.
+    - Design Kit - Added clickable navigation in the sidebar, allowing users to jump to previous steps.
+    - Design Kit - Disabled live preview and other actions while inserting the kit into a page.
+    - Design Kit - Improved UI/UX for a better user experience.
+    - Design Kit - Enhanced error handling during the import process.
+    - Design Kit - Added an admin notice for missing file permissions.
+    - Design Kit - Removed validation for the mobile field in AI onboarding.
+    - Design Kit - Added a loader while inserting the block.
+    - AI Builder - Added ZipWP new features icon support.
+    - AI Builder - Added a filter to disable the Premium Badge for templates.
+- Fix
+    - Design Kit - Fixed console error causing a blank screen in GT AI onboarding if already prefilled.
+    - Design Kit - Resolved an issue where the Design Library button was not displayed in the Spectra One theme editor when the Gutenberg Plugin was activated.
+    - Design Kit - Fixed a console error that occurred on the screen of the image when AI data was prefilled.
+    - Design Kit - Addressed a blank screen issue when accessing the "Design Library" on Bedrock-powered sites.
+    - Design Kit - Fixed option 'ast-block-templates_data-' not getting deleted after importing the site template.
+    - Design Kit - Prevented adding a block to a new page after Spectra installation.
+    - Design Kit - Fixed shuffling of images when changing the orientation multiple times.
+    - Design Kit - Fixed AI-generated business description response count not working as expected.
+    - Design Kit - Fixed issue with authentication redirection.
+    - AI Builder - Made compulsory features enabled by default and non-clickable.
+    - AI Builder - UI improvements.
+    - AI Builder - Fixed acceptance of incorrect input in the email field.
+    - AI Builder - Ensured the "site creation limit exceeded" popup is displayed correctly.
+
+v4.3.4 - 24-June-2024
+- Chore: AI-Builder - Included build files.
+- Improvement: AI-Builder - Added ability to skip the Features screen using a filter.
+- Improvement: AI-Builder - Improved UI/UX.
+- Fix: AI-Builder - Site creation limit exceeded popup was not displaying.
+- Fix: AI-Builder - Removed irrelevant error messages from logs during import failures.
+
+v4.3.3 - 12-June-2024
+- Improvement: AI Builder - Error Boundary Screen in case of unexpected errors.
+- Improvement: AI Builder - Removed phone validations to match this phone format - Ex: +1 (888) SIXT-CAR (749-8227)
+- Improvement: ZipWP Images - Updated preview screen for better UX.
+- Fix: AI Builder - Better handling of console errors due to missing URLs in Image object from ZipWP images API.
+- Fix: Design Kit - Fixed a console error in Gutenberg Templates library due to missing URLs for author and engine for placeholder images.
+- Fix: Resolved PHP 8.2 deprecated notice related to the creation of dynamic properties.
+- Fix: ZipWP Images - "Select" of media library was not showing in the customiser preview.
+
+v4.3.2 - 11-June-2024
+- Fix: Fixed an issue where the search functionality in the Elementor editor was not working.
+
+v4.3.1 - 06-June-2024
+- Improvement: Added logging for import failures with a user alert for log details, warning that retries will exhaust AI site attempts.
+- Improvement: Prefill websites based on the previous site creation.
+- Fix: Resolved issue causing infinite skeleton loading for the classic template library.
+- Fix: Resolved blog posts throwing 404 errors.
+- Fix: Fixed an error when using the Spectra One theme and Starter Templates to import websites with ZipAI.
+- Fix: The title for the `Description` step does not change for exceptional cases.
+- Fix: Design Kit - Resolved Console error for undefined images.
+
+v4.3.0 - 04-June-2024
+- New: What's New - Ability to see the new updates for Starter Templates plugin in the form of feed.
+- New: Free Images - Added all new library for Free Images with new free image search engines like Pexels and Pixabay.
+- Improvement: Added Admin Notice if Required XML Reader Class Not Found.
+- Improvement: Consistent UI Changes for AI Builder.
+- Improvement: UI - Improved the tooltip UI.
+- Fix: Classic Templates Not Showing for New Sites During Sync.
+- Fix: AI Builder - Fixed an issue with inconsistent font sizes and line height in the onboarding process.
+
+v4.2.6 - 27-May-2024
+- Improvement: AI Builder - Added a pre-installation confirmation modal before building the site.
+- Fix: Fixed a redirection issue with the "Try the New AI Builder" button on Starter Templates dashboard.
+- Fix: Corrected template listing for the Spectra One theme.
+- Fix: Fixed an issue where import failed for Beaver Builder templates.
+- Fix: Addressed an issue where fonts, colors, and other settings were not applied after importing Elementor templates.
+
+v4.2.5 - 21-May-2024
+- Fix: Resolved an issue that caused plugin activation errors on multisite installations.
+- Fix: Design Kit - The library not displaying on subdomain sites when the plugin is network activated.
+
+v4.2.4 - 17-May-2024
+- Improvement: Added a way to disable Classic Templates Importer.
+- Fix: Fixed broken WP-CLI import process for classic templates.
+
+v4.2.3 - 14-May-2024
+- Fix: Fixed the error while importing the classic templates.
+
+v4.2.2 - 10-May-2024
+- Improvement: Better error handling.
+- Improvement: Better preview for the color palette.
+- Improvement: Better UX while selecting Starter Templates.
+- Improvement: Improved the way Starter Templates stores JSON data while sync process to address memory issues.
+- Improvement: AI Builder - Improved the user experience by blocking unwanted options while processing data on a particular step.
+- Fix: Fixed an issue where the Starter Templates won't get imported on an RTL website.
+- Fix: Design Kit: Rectified an issue where the Template kit names went missing due to library update.
+- Fix: AI Builder - Fixed an issue where the import would remain stuck at 98%.
+- Fix: Made Starter Templates more secure while uploading SVG files.
+
+v4.2.1 - 03-May-2024
+- Fix: Fixed an incorrect type casting of a string on a popup for AI Builder.
+
+v4.2.0 - 29-April-2024
+- New: Added custom color palette selection option in AI Builder.
+- New: Added "Features" screen to the Classic Builder onboarding.
+- New: 'Load More' templates option in AI Builder.
+- New: Design Kit - Added language compatibility for personalizing the AI copy.
+- Improvement: Enhanced template search functionality.
+- Improvement: Improved the way Starter Templates store JSON data during the import process to address memory issues.
+- Improvement: Optimized and enhanced code for a better user experience.
+- Improvement: User Interface improvements for the Template Kit library.
+- Improvement: Design Kit - Improved responsive design and UX.
+- Improvement: Classic Templates - Improved responsive design and UX.
+- Improvement: Ability to edit the previous step of AI Onboarding by clicking on the sidebar.
+- Improvement: Now, Upload images are available in a new tab within same screen.
+- Fix: Resolved issue with import for RTL sites.
+- Fix: Design Kit - Fixed an issue where the Design Kit button was not visible on an FSE-based theme.
+- Fix: Design Kit - Fixed an issue where the line height of the Design Kit templates appeared messed up.
+- Fix: Design Kit - Fixed a fatal error caused by unavailable error_log related libraries on the user's server.
+
 v4.1.7 - 22-April-2024
 - Improvement: Hardened the security of the plugin.
 
@@ -325,4 +521,4 @@ v4.0.0 - 03-January-2024
 v3.5.7 - 30-December-2023
 - Fix: Fixed Template Kit library conflict ( 503 Error ) with Gravity Form plugin.
 
-Check out the detailed changelog [here](https://wpastra.com/product/starter-templates-plugin/).
+Check out the detailed changelog [here](https://startertemplates.com/whats-new/).
